@@ -28,5 +28,20 @@
   Limitation: playlists with 0 seed tracks (title-only) have no
   interactions to fold in, so ALS can't recommend for them at all -- next
   step is a hybrid that falls back to popularity for that case.
-- Next: hybrid cold-start fallback, scale pipeline to the full ~1M
-  playlists, write up report.
+- `src/knn_model.py`: item-based CF via playlist co-occurrence (no training
+  step, pure lookup). On the full 2000-task eval set (same tasks as above,
+  including the 441 zero-seed ones, which fall back to popularity):
+  R-precision 0.092, NDCG 0.207, clicks 10.6.
+- `src/hybrid_model.py`: ALS when a playlist has seed tracks, popularity
+  fallback when it doesn't. Evaluated on the same full 2000-task set as KNN
+  (unlike the earlier `als_model.py` number, which only covered the 1559
+  tasks ALS could fold in) so it's a fair comparison:
+  R-precision 0.097, NDCG 0.223, clicks 9.3 -- best of the three.
+- Decision: KNN's per-task cost scales with how many playlists share a
+  seed track, which gets expensive for popular tracks at 1M-playlist scale.
+  ALS's cost is a fixed matrix multiply regardless of data size. So the
+  hybrid (ALS + popularity fallback) is the model we scale to the full
+  dataset; KNN stays as a documented dev-scale comparison point in the
+  report.
+- Next: build the full ~1M-playlist processed dataset and eval split, then
+  rerun popularity baseline + hybrid model at full scale. Write up report.
