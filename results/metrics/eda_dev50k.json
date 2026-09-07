@@ -1,0 +1,16 @@
+{
+  "dataset": "dev50k",
+  "n_playlists": 50000,
+  "n_unique_tracks": 461880,
+  "n_unique_artists": 80483,
+  "n_unique_albums": 195600,
+  "n_interactions": 3344374,
+  "avg_tracks_per_playlist": 66.88748,
+  "median_tracks_per_playlist": 50.0,
+  "max_tracks_per_playlist": 250,
+  "min_tracks_per_playlist": 5,
+  "avg_followers": 2.62358,
+  "pct_collaborative": 2.2159999999999997,
+  "top10_track_share_pct": 0.5600749198504713,
+  "tracks_appearing_once_pct": 57.665194422793796
+}
