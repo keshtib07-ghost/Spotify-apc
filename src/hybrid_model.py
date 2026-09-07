@@ -61,12 +61,14 @@ def main():
     model.fit(mat)
     print(f"Trained ALS in {time.time()-t0:.1f}s")
 
-    track_pop = np.asarray(mat.sum(axis=0)).flatten()
-    pop_rank_uris = [track_categories[i] for i in np.argsort(-track_pop)]
-
     has_seed_mask = eval_tasks["pid"].isin(pid_index) & (eval_tasks["n_seed"] > 0)
     als_tasks = eval_tasks[has_seed_mask].reset_index(drop=True)
     fallback_tasks = eval_tasks[~has_seed_mask].reset_index(drop=True)
+
+    track_pop = np.asarray(mat.sum(axis=0)).flatten()
+    max_seed_len = fallback_tasks["seed_track_uris"].apply(len).max() if len(fallback_tasks) else 0
+    top_idx = np.argsort(-track_pop)[: args.k + max_seed_len]
+    pop_rank_uris = [track_categories[i] for i in top_idx]
     print(f"ALS-served: {len(als_tasks)}, popularity-fallback: {len(fallback_tasks)}")
 
     results = []

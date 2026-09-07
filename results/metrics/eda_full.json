@@ -1,0 +1,16 @@
+{
+  "dataset": "full",
+  "n_playlists": 1000000,
+  "n_unique_tracks": 2262292,
+  "n_unique_artists": 295860,
+  "n_unique_albums": 734684,
+  "n_interactions": 66346428,
+  "avg_tracks_per_playlist": 66.346428,
+  "median_tracks_per_playlist": 49.0,
+  "max_tracks_per_playlist": 376,
+  "min_tracks_per_playlist": 5,
+  "avg_followers": 2.597746,
+  "pct_collaborative": 2.2569,
+  "top10_track_share_pct": 0.5837752109277081,
+  "tracks_appearing_once_pct": 47.44829579912761
+}

@@ -43,5 +43,20 @@
   hybrid (ALS + popularity fallback) is the model we scale to the full
   dataset; KNN stays as a documented dev-scale comparison point in the
   report.
-- Next: build the full ~1M-playlist processed dataset and eval split, then
-  rerun popularity baseline + hybrid model at full scale. Write up report.
+- Built the full ~1M-playlist processed dataset (2.26M unique tracks, 66.3M
+  interactions; 47.4% of tracks are still singletons even at full scale).
+  Eval split: 10,000 held-out playlists, same seed-length scenarios as dev.
+- Found and fixed a real perf bug: `baseline_popularity.py` and the
+  fallback path in `hybrid_model.py` were filtering seed tracks against the
+  *entire* ranked track list per eval task (2.26M-item Python list
+  comprehension x 10,000 tasks). Fixed by pre-slicing to just the top
+  `k + max_seed_len` candidates before filtering -- popularity baseline
+  went from a projected ~19 minutes to 22 seconds.
+- Full-scale results (10,000 eval playlists), confirming the dev50k
+  findings hold at real scale:
+    popularity: R-precision 0.024, NDCG 0.075, clicks 21.2
+    hybrid (ALS+popularity fallback): R-precision 0.095, NDCG 0.219,
+      clicks 9.1  (~4x R-precision over popularity; ALS training took 375s
+      for 1M playlists x 2.26M tracks, 15 iterations, factors=64)
+- Next: write up the report (methodology, results, discussion of the
+  long-tail/cold-start limitation), then GitHub Pages.

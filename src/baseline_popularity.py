@@ -28,7 +28,8 @@ def main():
     eval_tasks = pd.read_parquet(os.path.join(pdir, "eval_tasks.parquet"))
 
     popularity = train["track_uri"].value_counts()
-    top_tracks = popularity.index.tolist()
+    max_seed_len = eval_tasks["seed_track_uris"].apply(len).max() if len(eval_tasks) else 0
+    top_tracks = popularity.index[: args.k + max_seed_len].tolist()
 
     results = []
     for _, row in eval_tasks.iterrows():
