@@ -1,0 +1,6 @@
+data/
+*.json
+*.parquet
+*.pkl
+__pycache__/
+.ipynb_checkpoints/
